@@ -1,0 +1,10 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
+#include "MultiplayerShooter.h"
+#include "Modules/ModuleManager.h"
+
+IMPLEMENT_PRIMARY_GAME_MODULE(FDefaultGameModuleImpl, MultiplayerShooter, "MultiplayerShooter");
+
+const FName FMultiplayerShooterGlobals::ProjectileCollisionChannelName = TEXT("BlockAllDynamic");
+const FName FMultiplayerShooterGlobals::FireInputActionName = TEXT("Fire");
+const FName FMultiplayerShooterGlobals::ProjectileColorParameterName = TEXT("Color");
