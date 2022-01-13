@@ -3,7 +3,7 @@
 #include "MultiplayerShooterCharacter.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "MultiplayerShooter/MultiplayerShooter.h"
-#include "MultiplayerShooter/MultiplayerShooterGameMode.h"
+#include "MultiplayerShooter/Game/MultiplayerShooterGameMode.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"

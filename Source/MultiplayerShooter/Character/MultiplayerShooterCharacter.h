@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#include "MultiplayerShooter/MultiplayerShooterTeam.h"
+#include "MultiplayerShooter/Game/MultiplayerShooterTeam.h"
 #include "GameFramework/Character.h"
 #include "MultiplayerShooterCharacter.generated.h"
 

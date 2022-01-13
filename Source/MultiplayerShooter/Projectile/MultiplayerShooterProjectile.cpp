@@ -8,7 +8,7 @@
 #include "GameFramework/DamageType.h"
 #include "Particles/ParticleSystem.h"
 #include "Kismet/GameplayStatics.h"
-#include "MultiplayerShooter/MultiplayerShooterGameMode.h"
+#include "MultiplayerShooter/Game/MultiplayerShooterGameMode.h"
 #include "UObject/ConstructorHelpers.h"
 
 AMultiplayerShooterProjectile::AMultiplayerShooterProjectile()
