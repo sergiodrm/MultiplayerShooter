@@ -16,7 +16,16 @@ public:
 
     virtual void BeginPlay() override;
 
+protected:
+    UFUNCTION()
+    void OnPlayerControllerLogin(bool success);
+
 private:
+    UPROPERTY(EditDefaultsOnly, Category = "Menu", meta = (AllowPrivateAccess = "true"))
+    TSubclassOf<class UMultiplayerShooterLoginWidget> LoginWidgetClass;
+    UPROPERTY(Transient)
+    class UMultiplayerShooterLoginWidget* LoginWidget;
+
     UPROPERTY(EditDefaultsOnly, Category = "Menu", meta = (AllowPrivateAccess = "true"))
     TSubclassOf<class UMultiplayerShooterLobbyWidget> LobbyWidgetClass;
     UPROPERTY(Transient)

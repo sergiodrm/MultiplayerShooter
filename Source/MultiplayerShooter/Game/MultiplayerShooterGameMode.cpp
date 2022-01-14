@@ -4,14 +4,17 @@
 
 #include "EngineUtils.h"
 #include "Camera/CameraActor.h"
-#include "MultiplayerShooter/Character/MultiplayerShooterCharacter.h"
+#include "MultiplayerShooter/Player/Character/MultiplayerShooterCharacter.h"
 #include "Engine/TargetPoint.h"
+#include "MultiplayerShooter/Player/Controller/MultiplayerShooterPlayerController.h"
+#include "MultiplayerShooter/Player/PlayerState/MultiplayerShooterPlayerState.h"
 #include "MultiplayerShooter/UI/MultiplayerShooterHUD.h"
 
 AMultiplayerShooterGameMode::AMultiplayerShooterGameMode()
 {
     DefaultPawnClass = nullptr;
     DefaultCharacterClass = AMultiplayerShooterCharacter::StaticClass();
+    PlayerStateClass = AMultiplayerShooterPlayerState::StaticClass();
     HUDClass = AMultiplayerShooterHUD::StaticClass();
 
     // Create the teams
@@ -48,6 +51,7 @@ void AMultiplayerShooterGameMode::PostLogin(APlayerController* NewPlayer)
     Super::PostLogin(NewPlayer);
     LoginNewController(NewPlayer);
 
+    // Placeholder
     if (!SpectatorCamera)
     {
         for (TActorIterator<ACameraActor> it(GetWorld()); it; ++it)
@@ -58,6 +62,17 @@ void AMultiplayerShooterGameMode::PostLogin(APlayerController* NewPlayer)
     }
 
     NewPlayer->SetViewTarget(SpectatorCamera);
+}
+
+bool AMultiplayerShooterGameMode::LoginNewPlayer(const FString& playerName, AMultiplayerShooterPlayerController* newController)
+{
+    const bool isValid = IsPlayerNameValid(playerName);
+    if (isValid)
+    {
+        AMultiplayerShooterPlayerState* playerState = newController->GetPlayerState<AMultiplayerShooterPlayerState>();
+        playerState->SetPlayerName(playerName);
+    }
+    return isValid;
 }
 
 FColor AMultiplayerShooterGameMode::GetTeamColor(EMultiplayerShooterTeam team) const
@@ -99,4 +114,26 @@ ATargetPoint* AMultiplayerShooterGameMode::GetRandomSpawnPoint() const
 {
     const uint32 index = static_cast<uint32>(FMath::RandRange(1, SpawnPoints.Num()) - 1);
     return SpawnPoints[index];
+}
+
+bool AMultiplayerShooterGameMode::IsPlayerNameValid(const FString& playerName) const
+{
+    bool valid = true;
+    for (const auto& team : Teams)
+    {
+        for (APlayerController* controller : team.Value.TeamControllers)
+        {
+            if (controller)
+            {
+                const APlayerState* playerState = controller->GetPlayerState<APlayerState>();
+                const FString otherName = playerState->GetPlayerNameCustom();
+                if (otherName.Equals(playerName))
+                {
+                    valid = false;
+                    break;
+                }
+            }
+        }
+    }
+    return valid;
 }

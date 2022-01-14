@@ -29,6 +29,8 @@ protected:
 public:
     virtual void PostLogin(APlayerController* NewPlayer) override;
 
+    bool LoginNewPlayer(const FString& playerName, class AMultiplayerShooterPlayerController* controller);
+
     UFUNCTION(BlueprintCallable)
     FColor GetTeamColor(EMultiplayerShooterTeam team) const;
 
@@ -36,6 +38,8 @@ protected:
     EMultiplayerShooterTeam LoginNewController(APlayerController* newController);
     class AMultiplayerShooterCharacter* SpawnCharacter(const class ATargetPoint* spawnPoint) const;
     class ATargetPoint* GetRandomSpawnPoint() const;
+
+    bool IsPlayerNameValid(const FString& playerName) const;
 
 private:
     UPROPERTY(Transient, EditDefaultsOnly, Category = "Camera", meta = (AllowPrivateAccess))
