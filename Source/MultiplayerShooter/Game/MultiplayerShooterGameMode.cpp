@@ -3,9 +3,11 @@
 #include "MultiplayerShooterGameMode.h"
 
 #include "EngineUtils.h"
+#include "MultiplayerShooterGameState.h"
 #include "Camera/CameraActor.h"
 #include "MultiplayerShooter/Player/Character/MultiplayerShooterCharacter.h"
 #include "Engine/TargetPoint.h"
+#include "Kismet/GameplayStatics.h"
 #include "MultiplayerShooter/Player/Controller/MultiplayerShooterPlayerController.h"
 #include "MultiplayerShooter/Player/PlayerState/MultiplayerShooterPlayerState.h"
 #include "MultiplayerShooter/UI/MultiplayerShooterHUD.h"
@@ -15,6 +17,7 @@ AMultiplayerShooterGameMode::AMultiplayerShooterGameMode()
     DefaultPawnClass = nullptr;
     DefaultCharacterClass = AMultiplayerShooterCharacter::StaticClass();
     PlayerStateClass = AMultiplayerShooterPlayerState::StaticClass();
+    GameStateClass = AMultiplayerShooterGameState::StaticClass();
     HUDClass = AMultiplayerShooterHUD::StaticClass();
 
     // Create the teams
@@ -34,6 +37,15 @@ void AMultiplayerShooterGameMode::BeginPlay()
         SpawnPoints.Add(*it);
     }
 
+    // Placeholder
+    if (!SpectatorCamera)
+    {
+        for (TActorIterator<ACameraActor> it(GetWorld()); it; ++it)
+        {
+            SpectatorCamera = *it;
+            break;
+        }
+    }
     // Spawn a character for each controller
     //for (TMap<EMultiplayerShooterTeam, FMultiplayerTeam>::TIterator it(Teams); it; ++it)
     //{
@@ -50,18 +62,6 @@ void AMultiplayerShooterGameMode::PostLogin(APlayerController* NewPlayer)
 {
     Super::PostLogin(NewPlayer);
     LoginNewController(NewPlayer);
-
-    // Placeholder
-    if (!SpectatorCamera)
-    {
-        for (TActorIterator<ACameraActor> it(GetWorld()); it; ++it)
-        {
-            SpectatorCamera = *it;
-            break;
-        }
-    }
-
-    NewPlayer->SetViewTarget(SpectatorCamera);
 }
 
 bool AMultiplayerShooterGameMode::LoginNewPlayer(const FString& playerName, AMultiplayerShooterPlayerController* newController)
@@ -71,6 +71,9 @@ bool AMultiplayerShooterGameMode::LoginNewPlayer(const FString& playerName, AMul
     {
         AMultiplayerShooterPlayerState* playerState = newController->GetPlayerState<AMultiplayerShooterPlayerState>();
         playerState->SetPlayerName(playerName);
+
+        AMultiplayerShooterGameState* gameState = Cast<AMultiplayerShooterGameState>(UGameplayStatics::GetGameState(GetWorld()));
+        gameState->MulticastRPCHandleNewPlayerName(playerState);
     }
     return isValid;
 }

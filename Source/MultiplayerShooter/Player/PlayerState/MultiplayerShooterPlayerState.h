@@ -12,4 +12,6 @@ class AMultiplayerShooterPlayerState : public APlayerState
     GENERATED_BODY()
 public:
     AMultiplayerShooterPlayerState();
+
+    virtual void OnRep_PlayerName() override;
 };

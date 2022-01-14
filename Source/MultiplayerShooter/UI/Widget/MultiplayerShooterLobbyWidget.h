@@ -17,7 +17,12 @@ protected:
     UFUNCTION()
     void OnReadyButtonPressed();
 
+    UFUNCTION()
+    void OnPlayerNameListChanged(const TArray<APlayerState*>& playerList);
+
 private:
+    UPROPERTY(meta = (BindWidget))
+    class UPlayerListPanelWidget* PlayerListPanel;
     UPROPERTY(meta = (BindWidget))
     class UButton* ReadyButton;
 };

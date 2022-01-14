@@ -1,5 +1,7 @@
 #include "MultiplayerShooterPlayerController.h"
 
+#include "EngineUtils.h"
+#include "Camera/CameraActor.h"
 #include "Kismet/GameplayStatics.h"
 #include "MultiplayerShooter/Game/MultiplayerShooterGameMode.h"
 
@@ -13,6 +15,9 @@ void AMultiplayerShooterPlayerController::BeginPlay()
     const FInputModeUIOnly inputMode;
     SetInputMode(inputMode);
     bShowMouseCursor = true;
+
+    const TActorIterator<ACameraActor> it(GetWorld());
+    SetViewTarget(*it);
 }
 
 void AMultiplayerShooterPlayerController::ServerRPCLoginPlayerName_Implementation(const FString& newName)

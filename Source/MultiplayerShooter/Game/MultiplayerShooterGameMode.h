@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "MultiplayerShooterTeam.h"
-#include "GameFramework/GameModeBase.h"
+#include "GameFramework/GameMode.h"
 #include "MultiplayerShooterGameMode.generated.h"
 
 USTRUCT()
@@ -18,7 +18,7 @@ struct FMultiplayerTeam
 };
 
 UCLASS(minimalapi)
-class AMultiplayerShooterGameMode : public AGameModeBase
+class AMultiplayerShooterGameMode : public AGameMode
 {
     GENERATED_BODY()
 
