@@ -11,6 +11,12 @@ void UMultiplayerShooterLoginWidget::NativeConstruct()
     ConfirmButton->OnClicked.AddDynamic(this, &UMultiplayerShooterLoginWidget::OnConfirmButtonPressed);
 }
 
+void UMultiplayerShooterLoginWidget::HandleInvalidName()
+{
+    StopAnimation(WaitingAnimation);
+    InputNameWidget->WidgetStyle.BackgroundColor = FSlateColor(FLinearColor::Red);
+}
+
 void UMultiplayerShooterLoginWidget::OnConfirmButtonPressed()
 {
     AMultiplayerShooterPlayerController* playerController = GetOwningPlayer<AMultiplayerShooterPlayerController>();

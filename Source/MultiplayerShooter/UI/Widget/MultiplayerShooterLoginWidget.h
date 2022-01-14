@@ -13,8 +13,8 @@ class UMultiplayerShooterLoginWidget : public UUserWidget
 public:
     virtual void NativeConstruct() override;
 
-    UPROPERTY(Transient, meta = (BindWidget))
-    class UTextBlock* DebugText;
+    void HandleInvalidName();
+
 protected:
     UFUNCTION()
     void OnConfirmButtonPressed();
