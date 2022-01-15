@@ -1,0 +1,29 @@
+pipeline {
+	agent {label 'master'}
+	environment { appName = "MSUE4" }
+	
+	stages
+	{
+		stage("First stage")
+		{
+			steps
+			{
+				script
+				{
+					sh "echo 'Building application...'"
+				}
+			}
+		}
+	}
+	post
+	{
+		success
+		{
+			sh "echo 'Build finished successfully!'"
+		}
+		failure
+		{
+			sh "echo 'Build has failed.'"
+		}
+	}
+}
